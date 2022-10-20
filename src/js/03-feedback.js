@@ -19,7 +19,7 @@ function addChangeValueFromLocalStorage() {
 function onSubmitForm(e) {
   e.preventDefault();
   console.log(createObjData(e));
-  localStorage.clear('feedbackFormState');
+  localStorage.removeItem('feedbackFormState');
   e.target.reset();
 }
 
