@@ -1,31 +1,40 @@
 import throttle from 'lodash.throttle';
 
 const formEL = document.querySelector('.feedback-form');
-const inputEl = document.querySelector('[name="email"]');
-const textAreaEl = document.querySelector('[name="message"]');
+// const inputEl = document.querySelector('[name="email"]');
+// const textAreaEl = document.querySelector('[name="message"]');
 
-addChangeValueFromLocalStorage();
-function addChangeValueFromLocalStorage() {
-  const dateFromStorage = localStorage.getItem('feedbackFormState');
-  const objDataFromStorage = JSON.parse(dateFromStorage);
+const LS_KEY_FEEDBACK = 'feedbackFormState';
+
+(function acceptChangesFromLocalStorage() {
+  const dateFromStorage = localStorage.getItem(LS_KEY_FEEDBACK);
+
   if (!dateFromStorage) {
     return;
   }
-  //   console.log(objDataFromStorage);
-  inputEl.value = objDataFromStorage.email;
-  textAreaEl.value = objDataFromStorage.message;
-}
 
-function onSubmitForm(e) {
+  const objDataFromStorage = JSON.parse(dateFromStorage);
+  if (!Object.values(objDataFromStorage).length) {
+    return;
+  }
+
+  for (const key in objDataFromStorage) {
+    if (objDataFromStorage.hasOwnProperty(key)) {
+      formEL.elements[key].value = objDataFromStorage[key];
+    }
+  }
+})();
+
+function handleFormSubmit(e) {
   e.preventDefault();
   console.log(createObjData(e));
-  localStorage.removeItem('feedbackFormState');
+  localStorage.removeItem(LS_KEY_FEEDBACK);
   e.target.reset();
 }
 
-function onInputChange(e) {
+function handleInputChange(e) {
   const feedbackFormState = createObjData(e);
-  localStorage.setItem('feedbackFormState', JSON.stringify(feedbackFormState));
+  localStorage.setItem(LS_KEY_FEEDBACK, JSON.stringify(feedbackFormState));
 }
 
 function createObjData(e) {
@@ -37,5 +46,5 @@ function createObjData(e) {
   return objData;
 }
 
-formEL.addEventListener('submit', onSubmitForm);
-formEL.addEventListener('input', onInputChange);
+formEL.addEventListener('submit', handleFormSubmit);
+formEL.addEventListener('input', handleInputChange);
