@@ -19,9 +19,7 @@ const LS_KEY_FEEDBACK = 'feedbackFormState';
   }
 
   for (const key in objDataFromStorage) {
-    if (objDataFromStorage.hasOwnProperty(key)) {
-      formEL.elements[key].value = objDataFromStorage[key];
-    }
+    formEL.elements[key].value = objDataFromStorage[key];
   }
 })();
 
@@ -39,7 +37,6 @@ function handleInputChange(e) {
 
 function createObjData(e) {
   const objData = {};
-  // const formData = new FormData(e.currentTarget);/// throttle не работает с e.currentTarget
   const formData = new FormData(formEL);
   formData.forEach((value, key) => {
     objData[key] = value;
