@@ -39,7 +39,8 @@ function handleInputChange(e) {
 
 function createObjData(e) {
   const objData = {};
-  const formData = new FormData(e.currentTarget);
+  // const formData = new FormData(e.currentTarget);/// throttle не работает с e.currentTarget
+  const formData = new FormData(formEL);
   formData.forEach((value, key) => {
     objData[key] = value;
   });
@@ -47,4 +48,4 @@ function createObjData(e) {
 }
 
 formEL.addEventListener('submit', handleFormSubmit);
-formEL.addEventListener('input', handleInputChange);
+formEL.addEventListener('input', throttle(handleInputChange, 250));
